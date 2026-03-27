@@ -8,25 +8,25 @@ const certificates = [
     title: 'Full Stack Development',
     issuer: 'Cipher School',
     color: '#7c3aed',
-    link: '#',
+    link: 'https://drive.google.com/drive/folders/12DSiEJ026qU2sDaC8YG42Rj_XBq6M3FH',
   },
   {
     title: 'Advanced Computer Networks',
     issuer: 'NPTEL',
     color: '#0ea5e9',
-    link: '#',
+    link: 'https://drive.google.com/drive/folders/12DSiEJ026qU2sDaC8YG42Rj_XBq6M3FH',
   },
   {
     title: 'Introduction to Hardware and Operating System',
     issuer: 'IBM',
     color: '#2563eb',
-    link: '#',
+    link: 'https://drive.google.com/drive/folders/12DSiEJ026qU2sDaC8YG42Rj_XBq6M3FH',
   },
   {
     title: 'The Bits and Bytes of Computer Networking',
     issuer: 'Google',
     color: '#16a34a',
-    link: '#',
+    link: 'https://drive.google.com/drive/folders/12DSiEJ026qU2sDaC8YG42Rj_XBq6M3FH',
   },
 ]
 
