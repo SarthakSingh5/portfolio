@@ -89,7 +89,7 @@ export default function About() {
             </div>
 
             <div className="about-actions">
-              <a href="/resume.pdf" className="btn-primary" target="_blank" rel="noopener noreferrer">
+              <a href="/Sarthak_CV.pdf" download className="btn-primary">
                 Download Resume
               </a>
             </div>

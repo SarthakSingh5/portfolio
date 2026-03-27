@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { useInView } from '../hooks/useInView'
-import { ExternalLink, Github, Star } from 'lucide-react'
+import { Github, Star } from 'lucide-react'
 import './Projects.css'
 
 const projects = [
@@ -118,9 +118,6 @@ export default function Projects() {
                   <div className="project-links">
                     <a href={project.repo} className="project-link" aria-label="GitHub Repo">
                       <Github size={16} />
-                    </a>
-                    <a href={project.demo} className="project-link" aria-label="Live Demo">
-                      <ExternalLink size={16} />
                     </a>
                   </div>
                 </div>

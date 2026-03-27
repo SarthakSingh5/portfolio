@@ -65,6 +65,7 @@ export default function Hero() {
           <a href="#contact" className="btn-outline" onClick={(e) => { e.preventDefault(); document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' }) }}>
             Get In Touch
           </a>
+
         </motion.div>
 
         {/* Socials */}
