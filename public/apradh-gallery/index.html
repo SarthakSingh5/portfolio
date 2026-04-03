@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Apradh 3D — Gallery</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0a0a0f;
+      color: #e2e8f0;
+      min-height: 100vh;
+    }
+
+    /* ── Header ── */
+    header {
+      padding: 2rem 2rem 1rem;
+      text-align: center;
+      background: linear-gradient(180deg, rgba(139,92,246,.15) 0%, transparent 100%);
+      border-bottom: 1px solid rgba(139,92,246,.2);
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      color: #a78bfa;
+      text-decoration: none;
+      font-size: .875rem;
+      font-weight: 500;
+      margin-bottom: 1.5rem;
+      transition: color .2s;
+    }
+    .back-btn:hover { color: #c4b5fd; }
+    .back-btn svg { width: 16px; height: 16px; }
+
+    h1 {
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      font-weight: 700;
+      background: linear-gradient(135deg, #c4b5fd, #f9a8d4);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .subtitle {
+      margin-top: .6rem;
+      color: #94a3b8;
+      font-size: .95rem;
+    }
+
+    /* ── Category pills ── */
+    .pills {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: .6rem;
+      padding: 1.8rem 1rem 1.2rem;
+    }
+    .pill {
+      padding: .4rem 1.1rem;
+      border-radius: 999px;
+      border: 1px solid rgba(139,92,246,.35);
+      background: rgba(139,92,246,.08);
+      color: #a78bfa;
+      font-size: .8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all .2s;
+    }
+    .pill:hover, .pill.active {
+      background: rgba(139,92,246,.25);
+      border-color: #8b5cf6;
+      color: #c4b5fd;
+    }
+
+    /* ── Grid ── */
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.25rem;
+      padding: 1.25rem 2rem 4rem;
+      max-width: 1300px;
+      margin: 0 auto;
+    }
+
+    .card {
+      position: relative;
+      border-radius: 14px;
+      overflow: hidden;
+      cursor: pointer;
+      border: 1px solid rgba(255,255,255,.07);
+      background: #111118;
+      transition: transform .25s, box-shadow .25s;
+      aspect-ratio: 16/9;
+    }
+    .card:hover {
+      transform: translateY(-4px) scale(1.01);
+      box-shadow: 0 20px 50px rgba(139,92,246,.25);
+      border-color: rgba(139,92,246,.5);
+    }
+    .card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform .4s;
+    }
+    .card:hover img { transform: scale(1.04); }
+
+    .card-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(0deg, rgba(0,0,0,.7) 0%, transparent 55%);
+      opacity: 0;
+      transition: opacity .25s;
+      display: flex;
+      align-items: flex-end;
+      padding: 1rem;
+    }
+    .card:hover .card-overlay { opacity: 1; }
+    .card-label {
+      font-size: .8rem;
+      font-weight: 600;
+      color: #e2e8f0;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+    }
+
+    /* ── Lightbox ── */
+    .lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: rgba(0,0,0,.92);
+      backdrop-filter: blur(8px);
+      align-items: center;
+      justify-content: center;
+      animation: fadeIn .2s ease;
+    }
+    .lightbox.open { display: flex; }
+
+    @keyframes fadeIn { from { opacity:0 } to { opacity:1 } }
+
+    .lb-inner {
+      position: relative;
+      max-width: 90vw;
+      max-height: 90vh;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 30px 80px rgba(0,0,0,.6);
+    }
+    .lb-inner img {
+      display: block;
+      max-width: 90vw;
+      max-height: 85vh;
+      object-fit: contain;
+    }
+
+    .lb-close {
+      position: fixed;
+      top: 1.5rem;
+      right: 1.5rem;
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.1);
+      border: none;
+      color: #fff;
+      font-size: 1.4rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background .2s;
+    }
+    .lb-close:hover { background: rgba(255,255,255,.2); }
+
+    .lb-nav {
+      position: fixed;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      background: rgba(139,92,246,.3);
+      border: 1px solid rgba(139,92,246,.5);
+      color: #fff;
+      font-size: 1.4rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background .2s;
+    }
+    .lb-nav:hover { background: rgba(139,92,246,.55); }
+    .lb-prev { left: 1.5rem; }
+    .lb-next { right: 1.5rem; }
+
+    .lb-caption {
+      position: fixed;
+      bottom: 1.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: .85rem;
+      color: #94a3b8;
+      background: rgba(0,0,0,.5);
+      padding: .4rem 1rem;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+
+    /* ── Footer ── */
+    footer {
+      text-align: center;
+      padding: 1.5rem;
+      color: #475569;
+      font-size: .8rem;
+      border-top: 1px solid rgba(255,255,255,.05);
+    }
+    footer a { color: #a78bfa; text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+
+<header>
+  <a href="/" class="back-btn">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="15 18 9 12 15 6"/>
+    </svg>
+    Back to Portfolio
+  </a>
+  <h1>Apradh 3D — Gallery</h1>
+  <p class="subtitle">Unity game project · 3D environment · Blender assets</p>
+</header>
+
+<div class="pills">
+  <button class="pill active" data-filter="all">All</button>
+  <button class="pill" data-filter="game">Game Scene</button>
+  <button class="pill" data-filter="blender">Blender Assets</button>
+  <button class="pill" data-filter="map">Map / Layout</button>
+</div>
+
+<div class="gallery" id="gallery">
+  <div class="card" data-cat="game" data-src="game1.png" data-label="Dhaba Scene — Unity">
+    <img src="game1.png" alt="Apradh Dhaba Scene in Unity" loading="lazy" />
+    <div class="card-overlay"><span class="card-label">Dhaba Scene · Unity</span></div>
+  </div>
+  <div class="card" data-cat="game" data-src="dhaba_door.png" data-label="Dhaba Interior / Door — Unity">
+    <img src="dhaba_door.png" alt="Dhaba interior and door in Unity" loading="lazy" />
+    <div class="card-overlay"><span class="card-label">Dhaba Interior · Unity</span></div>
+  </div>
+  <div class="card" data-cat="game" data-src="sample_scene.png" data-label="Sample Scene — Gameplay">
+    <img src="sample_scene.png" alt="Gameplay scene with characters aiming" loading="lazy" />
+    <div class="card-overlay"><span class="card-label">Sample Scene · Gameplay</span></div>
+  </div>
+  <div class="card" data-cat="map" data-src="ngo_scene.png" data-label="NGO Scene — Unity Editor">
+    <img src="ngo_scene.png" alt="NGO scene in Unity editor with scene list" loading="lazy" />
+    <div class="card-overlay"><span class="card-label">NGO Scene · Unity Editor</span></div>
+  </div>
+  <div class="card" data-cat="map" data-src="ngo_blueprint.png" data-label="NGO Office Blueprint — 3D Model">
+    <img src="ngo_blueprint.png" alt="NGO office design blueprint 3D model" loading="lazy" />
+    <div class="card-overlay"><span class="card-label">NGO Office Blueprint · 3D</span></div>
+  </div>
+  <div class="card" data-cat="blender" data-src="character_hair.png" data-label="Character Model with Hair — Blender">
+    <img src="character_hair.png" alt="3D character model with hair in Blender" loading="lazy" />
+    <div class="card-overlay"><span class="card-label">Character Model · Blender</span></div>
+  </div>
+  <div class="card" data-cat="blender" data-src="cloth1.png" data-label="T-Shirt — Blender">
+    <img src="cloth1.png" alt="3D T-Shirt model in Blender" loading="lazy" />
+    <div class="card-overlay"><span class="card-label">T-Shirt · Blender</span></div>
+  </div>
+  <div class="card" data-cat="blender" data-src="cloth2.png" data-label="Vest / Tank Top — Blender">
+    <img src="cloth2.png" alt="3D Vest model in Blender" loading="lazy" />
+    <div class="card-overlay"><span class="card-label">Vest / Tank Top · Blender</span></div>
+  </div>
+  <div class="card" data-cat="blender" data-src="cloth3.png" data-label="Formal Shirt — Blender">
+    <img src="cloth3.png" alt="3D Formal Shirt model in Blender" loading="lazy" />
+    <div class="card-overlay"><span class="card-label">Formal Shirt · Blender</span></div>
+  </div>
+  <div class="card" data-cat="blender" data-src="cloth4.png" data-label="Kurta / Dress — Blender">
+    <img src="cloth4.png" alt="3D Kurta model in Blender" loading="lazy" />
+    <div class="card-overlay"><span class="card-label">Kurta / Dress · Blender</span></div>
+  </div>
+</div>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox">
+  <button class="lb-close" id="lb-close">✕</button>
+  <button class="lb-nav lb-prev" id="lb-prev">‹</button>
+  <div class="lb-inner">
+    <img id="lb-img" src="" alt="" />
+  </div>
+  <button class="lb-nav lb-next" id="lb-next">›</button>
+  <p class="lb-caption" id="lb-caption"></p>
+</div>
+
+<footer>
+  <a href="https://github.com/SarthakSingh5/Apradh3DTrial" target="_blank" rel="noopener">GitHub Repository</a>
+  &nbsp;·&nbsp; Part of Sarthak Singh's Portfolio
+</footer>
+
+<script>
+  const cards = Array.from(document.querySelectorAll('.card'))
+  const gallery = document.getElementById('gallery')
+  const lightbox = document.getElementById('lightbox')
+  const lbImg = document.getElementById('lb-img')
+  const lbCaption = document.getElementById('lb-caption')
+  let visible = [...cards]
+  let current = 0
+
+  // Filter
+  document.querySelectorAll('.pill').forEach(pill => {
+    pill.addEventListener('click', () => {
+      document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'))
+      pill.classList.add('active')
+      const f = pill.dataset.filter
+      visible = cards.filter(c => f === 'all' || c.dataset.cat === f)
+      cards.forEach(c => {
+        const show = f === 'all' || c.dataset.cat === f
+        c.style.display = show ? '' : 'none'
+      })
+    })
+  })
+
+  // Open lightbox
+  cards.forEach(card => {
+    card.addEventListener('click', () => {
+      current = visible.indexOf(card)
+      openLb(current)
+    })
+  })
+
+  function openLb(idx) {
+    const card = visible[idx]
+    lbImg.src = card.dataset.src
+    lbCaption.textContent = `${idx + 1} / ${visible.length}  ·  ${card.dataset.label}`
+    lightbox.classList.add('open')
+  }
+
+  document.getElementById('lb-close').addEventListener('click', () => lightbox.classList.remove('open'))
+  lightbox.addEventListener('click', e => { if (e.target === lightbox) lightbox.classList.remove('open') })
+
+  document.getElementById('lb-prev').addEventListener('click', e => {
+    e.stopPropagation()
+    current = (current - 1 + visible.length) % visible.length
+    openLb(current)
+  })
+  document.getElementById('lb-next').addEventListener('click', e => {
+    e.stopPropagation()
+    current = (current + 1) % visible.length
+    openLb(current)
+  })
+
+  document.addEventListener('keydown', e => {
+    if (!lightbox.classList.contains('open')) return
+    if (e.key === 'Escape') lightbox.classList.remove('open')
+    if (e.key === 'ArrowLeft') { current = (current - 1 + visible.length) % visible.length; openLb(current) }
+    if (e.key === 'ArrowRight') { current = (current + 1) % visible.length; openLb(current) }
+  })
+</script>
+</body>
+</html>

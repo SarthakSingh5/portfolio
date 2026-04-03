@@ -133,6 +133,18 @@
   color: var(--purple-light);
 }
 
+.project-link-demo {
+  background: rgba(139,92,246,0.1);
+  border-color: rgba(139,92,246,0.3);
+  color: var(--purple-light);
+}
+
+.project-link-demo:hover {
+  background: rgba(139,92,246,0.25);
+  border-color: var(--purple);
+  box-shadow: 0 0 12px rgba(139,92,246,0.3);
+}
+
 @media (max-width: 1024px) {
   .projects-grid { grid-template-columns: repeat(2, 1fr); }
 }

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { useInView } from '../hooks/useInView'
-import { Github, Star } from 'lucide-react'
+import { Github, Star, ExternalLink } from 'lucide-react'
 import './Projects.css'
 
 const projects = [
@@ -12,7 +12,7 @@ const projects = [
     category: 'Full-Stack',
     stars: 0,
     gradient: 'linear-gradient(135deg, #6366f1, #8b5cf6)',
-    demo: '#',
+    demo: '/cms-gallery/index.html',
     repo: 'https://github.com/SarthakSingh5/CMS',
     featured: true,
   },
@@ -23,7 +23,7 @@ const projects = [
     category: 'Game Dev',
     stars: 0,
     gradient: 'linear-gradient(135deg, #8b5cf6, #ec4899)',
-    demo: '#',
+    demo: '/apradh-gallery/index.html',
     repo: 'https://github.com/SarthakSingh5/Apradh3DTrial',
     featured: true,
   },
@@ -116,6 +116,11 @@ export default function Projects() {
                     <span>{project.stars}</span>
                   </div>
                   <div className="project-links">
+                    {project.demo && project.demo !== '#' && (
+                      <a href={project.demo} className="project-link project-link-demo" aria-label="View Demo" title="View Gallery">
+                        <ExternalLink size={16} />
+                      </a>
+                    )}
                     <a href={project.repo} className="project-link" aria-label="GitHub Repo">
                       <Github size={16} />
                     </a>
