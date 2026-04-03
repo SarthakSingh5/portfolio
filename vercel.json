@@ -1,0 +1,7 @@
+{
+  "rewrites": [
+    { "source": "/apradh-gallery/(.*)", "destination": "/apradh-gallery/$1" },
+    { "source": "/cms-gallery/(.*)", "destination": "/cms-gallery/$1" },
+    { "source": "/((?!apradh-gallery|cms-gallery).*)", "destination": "/index.html" }
+  ]
+}
